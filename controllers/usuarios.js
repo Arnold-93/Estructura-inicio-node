@@ -76,11 +76,11 @@ const usuarioPut = async(req = request, res = response) => {
 const usuarioDelet = async (req, res) => {
     const { id } = req.params;
     const usuario = await Usuario.findByIdAndUpdate( id , {estado : false});
-
-
+ 
     res.json({
         msg: 'metodo Delet desde el controlador',
-        usuario
+        usuarioDelet: usuario,
+      //  usuarioEjecut: req.usuario //el usuario ejecutando vienen desdel el middleware/validar-jwt.js ya que en las rutas se esta ejecuntado este middleware primero donde se parcea el usuario obtenido
     })
 } 
 

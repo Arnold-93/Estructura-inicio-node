@@ -9,7 +9,7 @@ class Server {
         this.port = process.env.PORT; // Definimos el puerto
         this.usuariosPath = '/api/usuarios' // Definimos un path de usuarios
         this.rolesPath = '/api/roles' // Definimos un path de roles
-
+        this.authPath = '/api/auth' // Definimos un path de auth
         //CONECTAR A BASE DE DATOS
         this.conectarDB();
         //MODDLEWARES
@@ -37,6 +37,7 @@ class Server {
     router() {
         this.app.use(this.usuariosPath, require('../routes/usuarios'));
         this.app.use(this.rolesPath, require('../routes/roles'))
+        this.app.use(this.authPath, require('../routes/auth'))
     }
     
     //EJECUTAMOS NUESTRO LISTEN
