@@ -5,12 +5,15 @@ const { validationResult } = require("express-validator");
 
 
 const usuariosGet = async(req, res = response  ) => { // Usa this.app en lugar de app para acceder a la instancia de express.
+    //OBTENEMOS LOS PARAMETROS DE PAGINADO
     const { limit = 5, desde = 0 } = req.query;  
+    //FILTRAMOS POR TODOS LOS USUARIOS EN ESTADO ACTIVO
     const query = { estado: true};
 
-    const [total, usuario] = await Promise.all([
-         Usuario.count(query),
-         Usuario.find(query).skip(Number(desde)).limit(Number(limit))
+    //CREAMOS UNA PROBLEMA QUE SE EJECUTARA DE MANERA PARALELA(HILOS)
+    const [total, usuario] = await Promise.all([ 
+         Usuario.count(query),//Contamos el total usuarios encontrados y aplicamos el filtro(query)
+         Usuario.find(query).skip(Number(desde)).limit(Number(limit)) //Aplicamos los parametros de filtro 
     ])
 
     res.json({
