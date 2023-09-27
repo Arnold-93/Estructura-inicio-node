@@ -68,7 +68,7 @@ const usuarioPut = async(req = request, res = response) => {
         resto.password = bcrypt.hashSync(password, salt)
     }
 
-    const usuario = await Usuario.findByIdAndUpdate(id, resto)
+    const usuario = await Usuario.findByIdAndUpdate(id, resto, { new: true })
 
     res.json({
         msg: 'metodo put desde el controlador',

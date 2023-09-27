@@ -4,12 +4,21 @@ const { dbConnect } = require('../database/config');
 
 class Server {
     constructor() {
-
         this.app = express(); // Utiliza express() para crear una instancia de la aplicación.
         this.port = process.env.PORT; // Definimos el puerto
         this.usuariosPath = '/api/usuarios' // Definimos un path de usuarios
         this.rolesPath = '/api/roles' // Definimos un path de roles
         this.authPath = '/api/auth' // Definimos un path de auth
+
+        this.path = {
+            usuariosPath : '/api/usuarios', // Definimos un path de usuarios
+            rolesPath : '/api/roles',// Definimos un path de roles
+            authPath : '/api/auth',// Definimos un path de auth
+            categoriaPath : '/api/categorias',// Definimos un path de categorias
+            productosPath : '/api/productos',// Definimos un path de productos
+            busquedaPath : '/api/busquedas'
+        }
+
         //CONECTAR A BASE DE DATOS
         this.conectarDB();
         //MODDLEWARES
@@ -35,9 +44,14 @@ class Server {
 
     //UTILIZAMOS TODAS LAS RUTAS
     router() {
-        this.app.use(this.usuariosPath, require('../routes/usuarios'));
-        this.app.use(this.rolesPath, require('../routes/roles'))
-        this.app.use(this.authPath, require('../routes/auth'))
+        this.app.use(this.path.usuariosPath, require('../routes/usuarios'));
+        this.app.use(this.path.rolesPath, require('../routes/roles'))
+        this.app.use(this.path.authPath, require('../routes/auth'))
+        this.app.use(this.path.categoriaPath, require('../routes/categorias'))
+        this.app.use(this.path.productosPath, require('../routes/productos'))
+        this.app.use(this.path.busquedaPath, require('../routes/busquedas'))
+
+
     }
     
     //EJECUTAMOS NUESTRO LISTEN
