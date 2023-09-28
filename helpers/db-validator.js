@@ -40,13 +40,24 @@ const validProdId = async (id) => {
     const existeProduct = await Producto.findById(id);
     if(!existeProduct)
         throw new Error(`El id Producto no existe ${id}`)
+    
 }
+/* 
+* Valido la collecion de archivos
+*
+*/
+const coleccionesPermitas = ( coleccion = '', colecciones = [] ) => {
+    if(!colecciones.includes(coleccion))
+            throw new Error(`La coleccion ${coleccion}no es permitida, ${colecciones}`);
 
+    return true;        
+}
 
 module.exports = {
     validRole,
     validCorreo,
     validId,
     validCatId,
-    validProdId
+    validProdId,
+    coleccionesPermitas
 };

@@ -1,6 +1,7 @@
 const express = require('express'); // Importa express antes de usarlo.
 const cors = require('cors');
 const { dbConnect } = require('../database/config');
+const fileUpload = require('express-fileupload');
 
 class Server {
     constructor() {
@@ -16,7 +17,8 @@ class Server {
             authPath : '/api/auth',// Definimos un path de auth
             categoriaPath : '/api/categorias',// Definimos un path de categorias
             productosPath : '/api/productos',// Definimos un path de productos
-            busquedaPath : '/api/busquedas'
+            busquedaPath : '/api/busquedas',
+            uploadPath : '/api/uploads'
         }
 
         //CONECTAR A BASE DE DATOS
@@ -31,7 +33,7 @@ class Server {
     async conectarDB() {
         await dbConnect();
     }
-
+    //MIDDLEWARES SE EJECUNTAN A NIVEL DE SERVIDOR ANTES DE INGRESAR A A LAS RUTAS
     middlewares() {
         //CORS
         this.app.use(cors())
@@ -39,7 +41,12 @@ class Server {
         this.app.use(express.json());
         //DIRECCION PUBLICA
         this.app.use(express.static('public'));
-
+        //FileUpload carga de archivos
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true
+        })); 
     }
 
     //UTILIZAMOS TODAS LAS RUTAS
@@ -50,7 +57,7 @@ class Server {
         this.app.use(this.path.categoriaPath, require('../routes/categorias'))
         this.app.use(this.path.productosPath, require('../routes/productos'))
         this.app.use(this.path.busquedaPath, require('../routes/busquedas'))
-
+        this.app.use(this.path.uploadPath, require('../routes/uploads'))
 
     }
     
